@@ -91,3 +91,4 @@ The repository is structured as follows:
     * `requirements.txt`: List of Python dependencies required for the project (torch, pandas, sklearn, etc.).
     * `README.md`: Project documentation and instructions.
     * `.gitignore`: Specifies intentionally untracked files to ignore.
+    * `.gitattributes`: Prevents git to convert lf to crlf.

@@ -28,7 +28,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Baseline Model (LSTM)
 LSTM_HIDDEN_SIZE = 64
 LSTM_EMBED_DIM = 64
-LSTM_EPOCHS = 20
+LSTM_EPOCHS = 15
 LSTM_LR = 0.001
 
 # Improved Model (CNN)

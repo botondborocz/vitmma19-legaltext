@@ -1,21 +1,19 @@
 # 1. Base Image
 FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime
 
-# 2. Munkakönyvtár
+# 2. Workdir
 WORKDIR /app
 
-# 3. Python csomagok
+# 3. Dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. MÓDOSÍTÁS ITT: Az src mappát src mappába másoljuk!
-# Így megmarad a szerkezet: /app/src/train.py
+# 4. Copy Code
 COPY ./src ./src
 
-# 5. Jogosultság a run.sh-nak (most már az src-ben van)
+# 5. Permissions
 RUN chmod +x src/run.sh
+RUN mkdir -p data log output
 
-RUN mkdir -p log output
-
-# 6. Az indítási útvonal
+# 6. Run
 CMD ["bash", "src/run.sh"]
