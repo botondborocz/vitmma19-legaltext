@@ -15,5 +15,7 @@ COPY ./src ./src
 # 5. Jogosultság a run.sh-nak (most már az src-ben van)
 RUN chmod +x src/run.sh
 
+RUN mkdir -p log output
+
 # 6. Az indítási útvonal
 CMD ["bash", "src/run.sh"]

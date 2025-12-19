@@ -5,7 +5,7 @@
 ### Project Information
 
 * **Selected Topic:** Legal Text Decoder
-* **Student Name:** [ENTER YOUR NAME HERE]
+* **Student Name:** Böröcz Botond
 * **Aiming for +1 Mark:** No
 
 ### Solution Description
@@ -52,3 +52,42 @@ Run the following command in the root directory of the repository to build the D
 
 ```bash
 docker build -t dl-project .
+```
+
+### Run
+To run the solution, use the following command. It is critical to mount the log, data, and output directories so that the results (including the required log file) are saved to your host machine.
+
+```bash
+docker run --rm -v your/absolute/path/to/output/folder:/app/output  dl-project > log/run.log 2>&1
+```
+
+## File Structure and Functions
+
+The repository is structured as follows:
+
+* **src/**: Contains the source code for the machine learning pipeline.
+    * `01-data-preprocessing.py`: Scripts for loading, downloading, cleaning, and preprocessing the raw data.
+    * `02-training.py`: The main script for defining the LSTM/CNN models and executing the training loop.
+    * `03-evaluation.py`: Scripts for evaluating the trained models on test data and generating metrics/charts.
+    * `04-inference.py`: Script for running the improved model on new, unseen Hungarian text to generate predictions.
+    * `config.py`: Central configuration file containing hyperparameters (epochs, learning rates) and project paths.
+    * `utils.py`: Helper functions for logging configuration and parameter counting.
+    * `run.sh`: Bash script that orchestrates the sequential execution of the full pipeline (Preprocessing → Training → Evaluation → Inference).
+    * `train_plan1.py`: Script for trying different improved models.
+    * `train_plan1_v2.py`: Script for trying different improved models.
+    * `train_plan2.py`: Script for trying different improved models.
+    * `train_plan3.py`: Script for trying different improved models.
+    * `train_plan4.py`: Script for trying different improved models.
+    * `train_plan5.py`: Script for trying different improved models.
+    * `train_plan6.py`: Script for trying different improved models.
+    * `train_plan7.py`: Script for trying different improved models.
+    * `train_plan8.py`: Script for trying different improved models.
+    * `train_plan9.py`: Script for trying different improved models.
+    * `train_plan10.py`: Script for trying different improved models.
+* **log/**: Contains log files.
+    * `run.log`: The main log file capturing the output of the training run, required for grading.
+* **Root Directory**:
+    * `Dockerfile`: Configuration file for building the Docker image with the necessary environment and dependencies.
+    * `requirements.txt`: List of Python dependencies required for the project (torch, pandas, sklearn, etc.).
+    * `README.md`: Project documentation and instructions.
+    * `.gitignore`: Specifies intentionally untracked files to ignore.

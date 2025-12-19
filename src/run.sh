@@ -1,41 +1,44 @@
 #!/bin/bash 
 set -e 
 
-# --- STEP 1: Fix Directory Context ---
-# Get the directory where this script file is actually located
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# --- STEP 1: Setup Logging ---
+mkdir -p /app/log
 
-# Navigate to the script's directory
-cd "$SCRIPT_DIR"
+# Redirect output to console AND log file
+exec > >(tee -a /app/log/run.log) 2>&1
 
-# Check if data_loader.py is here. If not, assuming the script is in a 
-# subdirectory (like /scripts) and the code is in the parent, we move up.
-if [ ! -f "data_loader.py" ]; then
-    echo "Info: 'data_loader.py' not found in $SCRIPT_DIR. Moving to parent directory..."
-    cd ..
-fi
+echo "========================================================"
+echo "PIPELINE STARTED AT: $(date)"
+echo "========================================================"
 
-echo "Working directory set to: $(pwd)"
+# --- STEP 2: Force Navigation to Source Folder ---
+# We hardcode this to match the Dockerfile structure
+cd /app/src
 
-echo "Starting the pipeline..."
+echo "Current Directory: $(pwd)"
+echo "Files in current directory:"
+ls -1 *.py
 
-# Check if the file actually exists before running to prevent cryptic errors
-if [ ! -f "data_loader.py" ]; then
-    echo "CRITICAL ERROR: 'data_loader.py' still not found in $(pwd)."
-    echo "Please ensure you are running this script from the project root or the script folder."
+# --- STEP 3: Verify Files Exist ---
+if [ ! -f "01-data-preprocessing.py" ]; then
+    echo "CRITICAL ERROR: '01-data-preprocessing.py' not found in $(pwd)."
     exit 1
 fi
 
-echo "Running data preprocessing..."
-python data_loader.py
+# --- STEP 4: Execute Scripts ---
 
-echo "Running baseline model training..." 
-python full_baseline.py
+echo "--- 1. Running Data Preprocessing ---"
+python 01-data-preprocessing.py
 
-echo "Running best model training..."
-python train_plan8.py
+echo "--- 2. Running Model Training ---" 
+python 02-training.py
 
-echo "Evaluating best model vs baseline model..."
-python compare.py --plan "8"
+echo "--- 3. Running Evaluation ---"
+python 03-evaluation.py
 
-echo "Pipeline finished successfully."
+echo "--- 4. Running Inference ---"
+python 04-inference.py
+
+echo "========================================================"
+echo "PIPELINE FINISHED SUCCESSFULLY AT: $(date)"
+echo "========================================================"
